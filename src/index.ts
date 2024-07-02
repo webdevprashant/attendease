@@ -17,9 +17,11 @@ app.get("/" , (req,res) => {
 
 import AuthRouter from "./routes/authRouter";
 import EventRouter from "./routes/eventRouter";
+import UserRouter from "./routes/userRouter";
 
 app.use("/auth" , header , AuthRouter);
 app.use("/event" , [header, authenticateJWT] , EventRouter);
+app.use("/user" , [header] , UserRouter);
 
 
 app.listen(process.env.PORT, () => {

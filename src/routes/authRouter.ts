@@ -1,8 +1,9 @@
 import express from 'express';
-import { logger, createJWT, getImgFileSize, uploadFileS3, randomNumber, sendOTP, apiResponse } from "../utils/utils";
+import { logger, createJWT, getImgFileSize, uploadFileS3, randomNumber, sendOTP, apiResponse, decodeJWT } from "../utils/utils";
 import { roles, s3Folders } from "../utils/constant";
 import UserModel from '../models/user.model';
 import multer from 'multer';
+import { authenticateJWT } from '../middleware/auth.middleware';
 const router = express.Router();
 
 
@@ -48,7 +49,7 @@ router.post("/login", async (req: express.Request, res: express.Response) => {
 });
 
 // Register
-router.post("/register", multer().single("userImg"), async (req: express.Request, res: express.Response) => {
+router.post("/register", authenticateJWT , multer().single("userImg"), async (req: express.Request, res: express.Response) => {
   try {
     const { role, name, mobile, gender } = req.body;
     if (!role || !name || !gender || !mobile) {
@@ -58,8 +59,9 @@ router.post("/register", multer().single("userImg"), async (req: express.Request
         message: `Mobile ${mobile} , Name ${name} , Gender ${gender} , Role ${role} needed for registering user.`
       });
     }
-
-    if (roles.admin !== role) {
+    
+    let decodeToken = decodeJWT(req.headers.authorization);
+    if (roles.admin !== decodeToken.role) {
       return res.json({ status: false, message: `Role ${role} not authorized for registration.` });
     }
 

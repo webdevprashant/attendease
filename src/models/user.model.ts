@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
 
 const schema = new Schema({
-  role: { type: String, required: true, default: "Normal" },  // Normal, Admin, EventManager
+  role: { type: String, required: true, default: "Member" },  // Member, Admin, EventManager
   name: { type: String, required: true, default: null },
   mobile: { type: Number, required: true, unique: true },
-  gender: { type: String, required: true, default: null, enum: ["Male" , "FeMale"] },
+  gender: { type: String, required: true, default: null, enum: ["Male" , "Female"] },
   business: { type: String, required: false, default: null },
   imageS3URL: { type: String, required: false, default: null },
   isActive: { type: Boolean, required: false, default: true },

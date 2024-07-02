@@ -4,7 +4,7 @@ export const s3Folders = {
 }
 
 export const roles = { 
-  normal: "Normal", 
+  normal: "Member", 
   admin: "Admin", 
   eventManager: "EventManager"
 };
